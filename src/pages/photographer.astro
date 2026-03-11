@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoGrid from '../components/photographer/PhotoGrid.astro';
+
+// 10 photos from public/images/portfolio/
+// span variants create an editorial, varied layout:
+//   'large'  → 2 cols × 2 rows  (hero photo)
+//   'wide'   → 2 cols × 1 row
+//   'tall'   → 1 col  × 2 rows
+//   'normal' → 1 col  × 1 row  (default)
+const photos = [
+  { src: '/images/portfolio/01.jpg', alt: 'Portfolio photo 1', span: 'large'  },
+  { src: '/images/portfolio/02.jpg', alt: 'Portfolio photo 2', span: 'normal' },
+  { src: '/images/portfolio/03.jpg', alt: 'Portfolio photo 3', span: 'normal' },
+  { src: '/images/portfolio/04.jpg', alt: 'Portfolio photo 4', span: 'wide'   },
+  { src: '/images/portfolio/05.jpg', alt: 'Portfolio photo 5', span: 'tall'   },
+  { src: '/images/portfolio/06.jpg', alt: 'Portfolio photo 6', span: 'normal' },
+  { src: '/images/portfolio/07.jpg', alt: 'Portfolio photo 7', span: 'normal' },
+  { src: '/images/portfolio/08.jpg', alt: 'Portfolio photo 8', span: 'wide'   },
+  { src: '/images/portfolio/09.jpg', alt: 'Portfolio photo 9', span: 'normal' },
+  { src: '/images/portfolio/10.jpg', alt: 'Portfolio photo 10', span: 'normal'},
+] as const;
+---
+
+<BaseLayout
+  title="Photographer"
+  description="Photography by Morten Andersen — Visual storytelling for National Geographic, NYT, The Guardian, Vogue and more."
+>
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Portfolio</p>
+      <h1 class="page-header__title">Photographer</h1>
+      <span class="red-line"></span>
+      <p class="page-header__desc">
+        Still images that tell stories. From the Atacama to the Arctic,
+        documentary work for the world's leading publications.
+      </p>
+    </div>
+  </section>
+
+  <!-- Photo grid -->
+  <section class="grid-section">
+    <PhotoGrid photos={photos} />
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Page header ──────────────────────────────────────── */
+  .page-header {
+    padding-top: calc(var(--nav-height) + 4rem);
+    padding-bottom: 3rem;
+  }
+
+  .page-header__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.9;
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header__desc {
+    max-width: 44ch;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin-top: 1.25rem;
+  }
+
+  /* ── Grid section ─────────────────────────────────────── */
+  .grid-section {
+    padding-bottom: var(--section-padding);
+  }
+</style>

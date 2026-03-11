@@ -1,0 +1,460 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const stats = [
+  { number: '15+', label: 'Years of experience' },
+  { number: '40+', label: 'Countries filmed' },
+  { number: '3',   label: 'Continents covered' },
+  { number: '9+',  label: 'International awards' },
+];
+
+const disciplines = [
+  'Documentary Film',
+  'Branded Content',
+  'Travel & Expedition',
+  'Editorial Photography',
+  'Corporate Film',
+  'Social Media Content',
+];
+---
+
+<BaseLayout
+  title="About"
+  description="Morten Andersen — Danish filmmaker and photographer based in Chile. Award-winning visual storyteller working for National Geographic, NYT, The Guardian and more."
+>
+
+  <!-- ── Hero: photo + name ─────────────────────────────── -->
+  <section class="about-hero">
+    <div class="about-hero__img-wrap">
+      <img
+        class="about-hero__img"
+        src="/images/about/morten.jpg"
+        alt="Morten Andersen — Filmmaker & Photographer"
+        loading="eager"
+        decoding="async"
+        onerror="this.parentElement.classList.add('about-hero__img-wrap--empty')"
+      />
+      <div class="about-hero__overlay"></div>
+    </div>
+
+    <div class="about-hero__content container">
+      <p class="about-hero__eyebrow">Filmmaker &amp; Photographer</p>
+      <h1 class="about-hero__name">MORTEN<br/>ANDERSEN</h1>
+      <p class="about-hero__location">
+        <span class="dot"></span>
+        Copenhagen born · Santiago based
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Stats strip ────────────────────────────────────── -->
+  <div class="stats-strip">
+    <div class="container">
+      <div class="stats-strip__inner">
+        {stats.map((s, i) => (
+          <>
+            <div class="stats-strip__item">
+              <span class="stats-strip__number">{s.number}</span>
+              <span class="stats-strip__label">{s.label}</span>
+            </div>
+            {i < stats.length - 1 && <div class="stats-strip__divider" aria-hidden="true"></div>}
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Bio ────────────────────────────────────────────── -->
+  <section class="bio section">
+    <div class="container">
+      <div class="bio__grid">
+
+        <!-- Left: heading -->
+        <div class="bio__left">
+          <p class="section-eyebrow">Biography</p>
+          <h2 class="bio__heading">Visual stories<br/>that move<br/>people.</h2>
+          <span class="red-line"></span>
+          <ul class="disciplines">
+            {disciplines.map(d => (
+              <li class="disciplines__item">
+                <span class="disciplines__dash">—</span> {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Right: bio paragraphs -->
+        <div class="bio__right">
+          <p class="bio__lead">
+            Morten Andersen is an award-winning Danish filmmaker and photographer
+            based in Santiago, Chile. Over more than fifteen years, he has built a
+            body of work that spans documentary film, branded content and editorial
+            photography — always driven by the same belief: that a single image or
+            carefully crafted film can change the way people see the world.
+          </p>
+          <p class="bio__body">
+            Born in Copenhagen and shaped by years of travel across Latin America,
+            Morten has developed a visual language that is cinematic, intimate and
+            deeply human. His documentary work has taken him from the salt flats of
+            the Atacama to the ice fields of Antarctica, from the streets of Lima to
+            the remote highlands of Perú, always searching for the story behind the
+            story.
+          </p>
+          <p class="bio__body">
+            His commercial clients include some of the most recognised names in the
+            world — National Geographic, The New York Times, The Guardian, Google,
+            Vogue, LEGO and Adidas — who trust his ability to bring authenticity and
+            craft to every frame. His work has been recognised at the Hollywood
+            International Documentary Awards, Picture of the Year Latam and Cannes
+            Lions.
+          </p>
+          <p class="bio__body">
+            When he is not on location, Morten is based in Santiago, where he runs
+            his production company and mentors the next generation of visual
+            storytellers across Latin America.
+          </p>
+
+          <a href="/contact" class="bio__cta">Work together</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Philosophy ─────────────────────────────────────── -->
+  <section class="philosophy">
+    <div class="container">
+      <blockquote class="philosophy__quote">
+        <span class="philosophy__mark">"</span>
+        Every project starts with listening. I want to understand the people,
+        the place, the silence between the words — before I ever pick up a camera.
+        <footer class="philosophy__footer">
+          <cite>— Morten Andersen</cite>
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── Gear / tools (optional — easy to remove) ───────── -->
+  <section class="gear section">
+    <div class="container">
+      <p class="section-eyebrow">Equipment</p>
+      <h2 class="gear__heading">Tools of the trade</h2>
+      <span class="red-line"></span>
+      <div class="gear__grid">
+        <div class="gear__group">
+          <h3 class="gear__group-title">Camera</h3>
+          <ul class="gear__list">
+            <li>Sony FX6 / FX3</li>
+            <li>Sony A7S III</li>
+            <li>DJI Mavic 3 Pro</li>
+          </ul>
+        </div>
+        <div class="gear__group">
+          <h3 class="gear__group-title">Lenses</h3>
+          <ul class="gear__list">
+            <li>Sony G Master 24–70mm f/2.8</li>
+            <li>Sony G Master 70–200mm f/2.8</li>
+            <li>Sigma Art 35mm f/1.4</li>
+          </ul>
+        </div>
+        <div class="gear__group">
+          <h3 class="gear__group-title">Post</h3>
+          <ul class="gear__list">
+            <li>DaVinci Resolve Studio</li>
+            <li>Adobe Premiere Pro</li>
+            <li>Adobe Lightroom Classic</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── About hero ───────────────────────────────────────── */
+  .about-hero {
+    position: relative;
+    height: 90svh;
+    min-height: 560px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .about-hero__img-wrap {
+    position: absolute;
+    inset: 0;
+    background: var(--color-surface);
+  }
+
+  /* Shown when photo is missing */
+  .about-hero__img-wrap--empty {
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+  }
+
+  .about-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .about-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(10,10,10,1)   0%,
+      rgba(10,10,10,0.6) 40%,
+      rgba(10,10,10,0.2) 100%
+    );
+  }
+
+  .about-hero__content {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 4rem;
+  }
+
+  .about-hero__eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .about-hero__name {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 12vw, 9rem);
+    line-height: 0.9;
+    color: var(--color-white);
+    margin-bottom: 1.25rem;
+  }
+
+  .about-hero__location {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,245,245,0.5);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(1.3); }
+  }
+
+  /* ── Stats strip ──────────────────────────────────────── */
+  .stats-strip {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: 2rem;
+  }
+  .stats-strip__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .stats-strip__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding-inline: clamp(1.5rem, 4vw, 4rem);
+  }
+  .stats-strip__divider {
+    width: 1px;
+    height: 2.5rem;
+    background: var(--color-border);
+  }
+  .stats-strip__number {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--color-white);
+    line-height: 1;
+  }
+  .stats-strip__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* ── Shared eyebrow ───────────────────────────────────── */
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  /* ── Bio ──────────────────────────────────────────────── */
+  .bio__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(3rem, 6vw, 7rem);
+    align-items: start;
+  }
+
+  .bio__heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--color-white);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Disciplines list */
+  .disciplines {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .disciplines__item {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    display: flex;
+    gap: 0.6rem;
+    transition: color 0.2s;
+  }
+  .disciplines__item:hover { color: var(--color-white); }
+  .disciplines__dash { color: var(--color-accent); flex-shrink: 0; }
+
+  /* Bio text */
+  .bio__lead {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.7;
+    color: var(--color-white);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  .bio__body {
+    font-size: 0.9rem;
+    line-height: 1.85;
+    color: var(--color-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .bio__cta {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.9rem 2.5rem;
+    background: var(--color-accent);
+    color: var(--color-white);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .bio__cta:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+  }
+
+  /* ── Philosophy quote ─────────────────────────────────── */
+  .philosophy {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+  .philosophy__quote {
+    max-width: 780px;
+    margin-inline: auto;
+    text-align: center;
+    font-style: normal;
+  }
+  .philosophy__mark {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 6rem;
+    color: var(--color-accent);
+    line-height: 0.5;
+    margin-bottom: 1.5rem;
+    opacity: 0.6;
+  }
+  .philosophy__quote p,
+  .philosophy__quote {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    line-height: 1.6;
+    color: var(--color-white);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+  .philosophy__footer {
+    margin-top: 2rem;
+  }
+  .philosophy__footer cite {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-style: normal;
+  }
+
+  /* ── Gear ─────────────────────────────────────────────── */
+  .gear__heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+  }
+  .gear__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .gear__group-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+  }
+  .gear__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .gear__list li {
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    transition: color 0.2s;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--color-border);
+  }
+  .gear__list li:hover { color: var(--color-white); border-color: var(--color-accent); }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .bio__grid { grid-template-columns: 1fr; gap: 3rem; }
+    .gear__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .gear__grid { grid-template-columns: 1fr; }
+    .stats-strip__divider { display: none; }
+  }
+</style>

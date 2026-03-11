@@ -1,0 +1,479 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// ── Awards data ────────────────────────────────────────────
+// Replace placeholders with Morten's real data.
+// Categories: 'documentary' | 'photography' | 'advertising'
+const awards = [
+  // ── Documentary ──────────────────────────────────────────
+  {
+    category:   'documentary',
+    label:      'Documentary',
+    festival:   'Hollywood International Documentary Awards',
+    award:      'Best Feature Documentary',
+    year:       '2023',
+    project:    'Atacama — The Driest Place on Earth',
+    location:   'Los Angeles, USA',
+  },
+  {
+    category:   'documentary',
+    label:      'Documentary',
+    festival:   'Hollywood International Documentary Awards',
+    award:      'Best Cinematography',
+    year:       '2022',
+    project:    'The Last Frontier',
+    location:   'Los Angeles, USA',
+  },
+  {
+    category:   'documentary',
+    label:      'Documentary',
+    festival:   'IDFA Amsterdam',
+    award:      'Special Jury Award',
+    year:       '2021',
+    project:    'Voces del Sur',
+    location:   'Amsterdam, Netherlands',
+  },
+  // ── Photography ──────────────────────────────────────────
+  {
+    category:   'photography',
+    label:      'Photography',
+    festival:   'Picture of the Year Latam',
+    award:      'First Place — Documentary Photography',
+    year:       '2023',
+    project:    'Life at the End of the World',
+    location:   'Latin America',
+  },
+  {
+    category:   'photography',
+    label:      'Photography',
+    festival:   'Picture of the Year Latam',
+    award:      'First Place — Environmental Photography',
+    year:       '2022',
+    project:    'Patagonia Untouched',
+    location:   'Latin America',
+  },
+  {
+    category:   'photography',
+    label:      'Photography',
+    festival:   'World Press Photo',
+    award:      'Honorable Mention — Nature',
+    year:       '2021',
+    project:    'Atacama Desert Series',
+    location:   'Amsterdam, Netherlands',
+  },
+  // ── Advertising ──────────────────────────────────────────
+  {
+    category:   'advertising',
+    label:      'Advertising',
+    festival:   'Cannes Lions',
+    award:      'Gold Lion — Branded Content & Entertainment',
+    year:       '2022',
+    project:    'Google: The Concha y Toro Story',
+    location:   'Cannes, France',
+  },
+  {
+    category:   'advertising',
+    label:      'Advertising',
+    festival:   'Cannes Lions',
+    award:      'Silver Lion — Film',
+    year:       '2021',
+    project:    'LEGO: Build a Better World',
+    location:   'Cannes, France',
+  },
+  {
+    category:   'advertising',
+    label:      'Advertising',
+    festival:   'Cannes Lions',
+    award:      'Bronze Lion — Online Film',
+    year:       '2020',
+    project:    'Adidas: Run for the Oceans',
+    location:   'Cannes, France',
+  },
+] as const;
+
+// Stats
+const totalAwards  = awards.length;
+const totalFests   = new Set(awards.map(a => a.festival)).size;
+const yearSpan     = `${awards.at(-1)?.year} – ${awards[0]?.year}`;
+
+type Category = 'all' | 'documentary' | 'photography' | 'advertising';
+const categories: { value: Category; label: string }[] = [
+  { value: 'all',          label: 'All'         },
+  { value: 'documentary',  label: 'Documentary' },
+  { value: 'photography',  label: 'Photography' },
+  { value: 'advertising',  label: 'Advertising' },
+];
+---
+
+<BaseLayout
+  title="Awards"
+  description="Morten Andersen — Award-winning filmmaker and photographer. Hollywood International Documentary Awards, Cannes Lions, Picture of the Year Latam."
+>
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Recognition</p>
+      <h1 class="page-header__title">Awards</h1>
+      <span class="red-line"></span>
+      <p class="page-header__desc">
+        International recognition across documentary film, photography and branded content.
+      </p>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats__inner">
+        <div class="stats__item">
+          <span class="stats__number">{totalAwards}+</span>
+          <span class="stats__label">Awards</span>
+        </div>
+        <div class="stats__divider"></div>
+        <div class="stats__item">
+          <span class="stats__number">{totalFests}</span>
+          <span class="stats__label">Festivals</span>
+        </div>
+        <div class="stats__divider"></div>
+        <div class="stats__item">
+          <span class="stats__number">3</span>
+          <span class="stats__label">Continents</span>
+        </div>
+        <div class="stats__divider"></div>
+        <div class="stats__item">
+          <span class="stats__number">{yearSpan}</span>
+          <span class="stats__label">Active years</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter + Grid -->
+  <section class="awards-section section">
+    <div class="container">
+
+      <!-- Category filter -->
+      <div class="filters" role="group" aria-label="Filter awards by category">
+        {categories.map(({ value, label }) => (
+          <button
+            class={`filter-btn ${value === 'all' ? 'filter-btn--active' : ''}`}
+            data-filter={value}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Awards grid -->
+      <div class="awards-grid" id="awards-grid">
+        {awards.map((award) => (
+          <article
+            class="award-card"
+            data-category={award.category}
+          >
+            <!-- Top row: category badge + year -->
+            <div class="award-card__top">
+              <span class={`award-card__badge award-card__badge--${award.category}`}>
+                {award.label}
+              </span>
+              <span class="award-card__year">{award.year}</span>
+            </div>
+
+            <!-- Award name -->
+            <h2 class="award-card__award">{award.award}</h2>
+
+            <!-- Festival -->
+            <p class="award-card__festival">{award.festival}</p>
+
+            <!-- Divider -->
+            <span class="award-card__line"></span>
+
+            <!-- Project -->
+            <p class="award-card__project">
+              <span class="award-card__project-label">Project</span>
+              {award.project}
+            </p>
+
+            <!-- Location -->
+            <p class="award-card__location">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+              {award.location}
+            </p>
+          </article>
+        ))}
+      </div>
+
+      <!-- Empty state (shown via JS when filter has no results) -->
+      <p class="awards-empty" id="awards-empty" aria-live="polite"></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards      = document.querySelectorAll<HTMLElement>('.award-card');
+  const empty      = document.getElementById('awards-empty')!;
+
+  function filter(value: string) {
+    let visible = 0;
+    cards.forEach((card) => {
+      const match = value === 'all' || card.dataset.category === value;
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    empty.textContent = visible === 0 ? 'No awards in this category yet.' : '';
+
+    filterBtns.forEach((btn) => {
+      btn.classList.toggle('filter-btn--active', btn.dataset.filter === value);
+    });
+  }
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => filter(btn.dataset.filter!));
+  });
+</script>
+
+<style>
+  /* ── Page header ──────────────────────────────────────── */
+  .page-header {
+    padding-top: calc(var(--nav-height) + 4rem);
+    padding-bottom: 2rem;
+  }
+  .page-header__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+  .page-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.9;
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+  }
+  .page-header__desc {
+    max-width: 44ch;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin-top: 1.25rem;
+  }
+
+  /* ── Stats bar ────────────────────────────────────────── */
+  .stats {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding-block: 2rem;
+    margin-bottom: 1rem;
+  }
+  .stats__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .stats__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding-inline: clamp(1.5rem, 4vw, 4rem);
+  }
+  .stats__divider {
+    width: 1px;
+    height: 2.5rem;
+    background: var(--color-border);
+  }
+  .stats__number {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--color-white);
+    line-height: 1;
+  }
+  .stats__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* ── Filters ──────────────────────────────────────────── */
+  .filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  .filter-btn {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .filter-btn:hover {
+    border-color: var(--color-white);
+    color: var(--color-white);
+  }
+  .filter-btn--active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  /* ── Awards grid ──────────────────────────────────────── */
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+  }
+
+  /* ── Award card ───────────────────────────────────────── */
+  .award-card {
+    background: var(--color-surface);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: background 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Red left border on hover */
+  .award-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--color-accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+  .award-card:hover { background: var(--color-surface2); }
+  .award-card:hover::before { transform: scaleY(1); }
+
+  .award-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Category badge */
+  .award-card__badge {
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 2px;
+  }
+  .award-card__badge--documentary { background: rgba(227,6,19,0.15); color: var(--color-accent); }
+  .award-card__badge--photography { background: rgba(245,245,245,0.08); color: var(--color-white); }
+  .award-card__badge--advertising  { background: rgba(255,215,0,0.1); color: #ffd700; }
+
+  .award-card__year {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Award name */
+  .award-card__award {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--color-white);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* Festival */
+  .award-card__festival {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Divider */
+  .award-card__line {
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--color-border);
+    margin-bottom: 1.25rem;
+    transition: width 0.3s ease, background 0.3s ease;
+  }
+  .award-card:hover .award-card__line {
+    width: 3rem;
+    background: var(--color-accent);
+  }
+
+  /* Project */
+  .award-card__project {
+    font-size: 0.8rem;
+    color: var(--color-white);
+    line-height: 1.4;
+    margin-bottom: 0.85rem;
+    flex-grow: 1;
+  }
+  .award-card__project-label {
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  /* Location */
+  .award-card__location {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+    margin-top: auto;
+  }
+  .award-card__location svg { flex-shrink: 0; opacity: 0.5; }
+
+  /* Empty state */
+  .awards-empty {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    padding: 2rem 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .awards-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .awards-grid { grid-template-columns: 1fr; }
+    .stats__inner { gap: 1rem; }
+    .stats__divider { display: none; }
+    .stats__item { padding-inline: 1.5rem; }
+  }
+</style>

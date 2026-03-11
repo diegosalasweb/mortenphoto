@@ -1,0 +1,204 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/blog/ArticleCard.astro';
+
+const allPosts = await getCollection('blog');
+const posts    = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const featured = posts.filter(p => p.data.featured);
+const regular  = posts.filter(p => !p.data.featured);
+
+const categories = [
+  { value: 'all',               label: 'All'               },
+  { value: 'film',              label: 'Film'              },
+  { value: 'photography',       label: 'Photography'       },
+  { value: 'travel',            label: 'Travel'            },
+  { value: 'behind-the-scenes', label: 'Behind the Scenes' },
+];
+---
+
+<BaseLayout
+  title="Blog"
+  description="Writing by Morten Andersen — on film, photography, travel and the craft of visual storytelling."
+>
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Journal</p>
+      <h1 class="page-header__title">Blog</h1>
+      <span class="red-line"></span>
+      <p class="page-header__desc">
+        Notes on craft, expeditions, clients and the spaces in between.
+      </p>
+    </div>
+  </section>
+
+  <section class="blog-section section">
+    <div class="container">
+
+      <!-- Filters -->
+      <div class="filters" role="group" aria-label="Filter posts by category">
+        {categories.map(({ value, label }) => (
+          <button
+            class={`filter-btn ${value === 'all' ? 'filter-btn--active' : ''}`}
+            data-filter={value}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Featured posts (2-col) -->
+      {featured.length > 0 && (
+        <div class="featured-grid" id="featured-grid">
+          {featured.map(post => (
+            <div class="featured-item" data-category={post.data.category}>
+              <ArticleCard post={post} featured={true} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- All posts grid -->
+      <div class="posts-grid" id="posts-grid">
+        {regular.map(post => (
+          <div class="post-item" data-category={post.data.category}>
+            <ArticleCard post={post} />
+          </div>
+        ))}
+      </div>
+
+      <!-- Empty state -->
+      <p class="blog-empty" id="blog-empty" aria-live="polite"></p>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const filterBtns    = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const featuredItems = document.querySelectorAll<HTMLElement>('.featured-item');
+  const postItems     = document.querySelectorAll<HTMLElement>('.post-item');
+  const featuredGrid  = document.getElementById('featured-grid');
+  const empty         = document.getElementById('blog-empty')!;
+
+  function filter(value: string) {
+    let visible = 0;
+
+    featuredItems.forEach((item) => {
+      const match = value === 'all' || item.dataset.category === value;
+      item.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    postItems.forEach((item) => {
+      const match = value === 'all' || item.dataset.category === value;
+      item.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    // Hide featured grid wrapper if all featured are hidden
+    if (featuredGrid) {
+      const anyFeaturedVisible = [...featuredItems].some(i => i.style.display !== 'none');
+      featuredGrid.style.display = anyFeaturedVisible ? '' : 'none';
+    }
+
+    empty.textContent = visible === 0 ? 'No posts in this category yet.' : '';
+
+    filterBtns.forEach((btn) => {
+      btn.classList.toggle('filter-btn--active', btn.dataset.filter === value);
+    });
+  }
+
+  filterBtns.forEach(btn => btn.addEventListener('click', () => filter(btn.dataset.filter!)));
+</script>
+
+<style>
+  .page-header {
+    padding-top: calc(var(--nav-height) + 4rem);
+    padding-bottom: 2rem;
+  }
+  .page-header__eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+  .page-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.9;
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+  }
+  .page-header__desc {
+    max-width: 44ch;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin-top: 1.25rem;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  .filter-btn {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .filter-btn:hover {
+    border-color: var(--color-white);
+    color: var(--color-white);
+  }
+  .filter-btn--active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  /* Featured grid: 2 wide columns */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+    margin-bottom: 1px;
+  }
+
+  /* Regular posts: 3 columns */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border);
+  }
+
+  .blog-empty {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    padding: 3rem 0;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 1024px) {
+    .posts-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .featured-grid,
+    .posts-grid { grid-template-columns: 1fr; }
+  }
+</style>

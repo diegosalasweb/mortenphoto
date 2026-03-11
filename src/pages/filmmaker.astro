@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoGrid from '../components/filmmaker/VideoGrid.astro';
+
+// ── Raw video data ─────────────────────────────────────────
+const rawVideos = [
+  {
+    platform: 'youtube' as const,
+    id:    '8oe40Q1ec0E',
+    title: 'Reel Filmmaker 2025',
+    span:  'large' as const,
+  },
+  {
+    platform: 'youtube' as const,
+    id:    'yJ89GAAztTQ',
+    title: 'Reel Travel 2025',
+    span:  'normal' as const,
+  },
+  {
+    platform: 'youtube' as const,
+    id:    'Sf6SVKwmawA',
+    title: 'Reel Mining 2025',
+    span:  'normal' as const,
+  },
+  {
+    platform: 'vimeo' as const,
+    id:    '275748334',
+    title: 'The Sol y Luna Story, Perú',
+    span:  'wide' as const,
+  },
+  {
+    platform: 'vimeo' as const,
+    id:    '275747779',
+    title: 'Hotel Titilaka, Perú',
+    span:  'tall' as const,
+  },
+  {
+    platform: 'vimeo' as const,
+    id:    '151302340',
+    title: 'Google — The Concha y Toro Story',
+    span:  'normal' as const,
+  },
+  {
+    platform: 'vimeo' as const,
+    id:    '276031885',
+    title: 'Antarctic Airway, Chile',
+    span:  'normal' as const,
+  },
+  {
+    platform: 'vimeo' as const,
+    id:    '273821521',
+    title: 'Landed, Rapa Nui',
+    span:  'wide' as const,
+  },
+] as const;
+
+// ── Thumbnail helpers ──────────────────────────────────────
+function ytThumb(id: string) {
+  // maxresdefault first, fallback to hqdefault via onerror in browser
+  return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+}
+
+async function vimeoThumb(id: string): Promise<string> {
+  try {
+    const res  = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`);
+    const data = await res.json() as { thumbnail_url?: string };
+    // Upgrade to largest available size
+    return (data.thumbnail_url ?? '').replace(/_\d+$/, '_1280');
+  } catch {
+    return '';
+  }
+}
+
+// ── Embed URL helpers ──────────────────────────────────────
+function ytEmbed(id: string) {
+  return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+}
+
+function vimeoEmbed(id: string) {
+  return `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+}
+
+// ── Resolve all thumbnails at build time ──────────────────
+const videos = await Promise.all(
+  rawVideos.map(async (v) => ({
+    id:       v.id,
+    platform: v.platform,
+    title:    v.title,
+    span:     v.span,
+    thumb:    v.platform === 'youtube' ? ytThumb(v.id) : await vimeoThumb(v.id),
+    embedUrl: v.platform === 'youtube' ? ytEmbed(v.id) : vimeoEmbed(v.id),
+  }))
+);
+---
+
+<BaseLayout
+  title="Filmmaker"
+  description="Films by Morten Andersen — Branded content, documentaries and travel films for Google, National Geographic, Vogue and more."
+>
+  <!-- Page header -->
+  <section class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Selected Work</p>
+      <h1 class="page-header__title">Filmmaker</h1>
+      <span class="red-line"></span>
+      <p class="page-header__desc">
+        Branded content, documentaries and travel films. From the Atacama to
+        Antarctica — stories told in motion.
+      </p>
+    </div>
+  </section>
+
+  <!-- Video mosaic -->
+  <section class="grid-section">
+    <VideoGrid videos={videos} />
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-top: calc(var(--nav-height) + 4rem);
+    padding-bottom: 3rem;
+  }
+
+  .page-header__eyebrow {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.9;
+    color: var(--color-white);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header__desc {
+    max-width: 44ch;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin-top: 1.25rem;
+  }
+
+  .grid-section {
+    padding-bottom: var(--section-padding);
+  }
+</style>
