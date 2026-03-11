@@ -7,54 +7,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 // Accepted formats: .svg (preferred), .png (transparent bg), .webp
 // Recommended size: 400×200 px, white or light version of the logo.
 const clients = [
-  {
-    name:     'National Geographic',
-    logo:     '/images/clients/national-geographic.svg',
-    url:      'https://www.nationalgeographic.com',
-    category: 'Media',
-  },
-  {
-    name:     'The New York Times',
-    logo:     '/images/clients/new-york-times.svg',
-    url:      'https://www.nytimes.com',
-    category: 'Media',
-  },
-  {
-    name:     'The Guardian',
-    logo:     '/images/clients/the-guardian.svg',
-    url:      'https://www.theguardian.com',
-    category: 'Media',
-  },
-  {
-    name:     'Google',
-    logo:     '/images/clients/google.svg',
-    url:      'https://www.google.com',
-    category: 'Tech',
-  },
-  {
-    name:     'Vogue',
-    logo:     '/images/clients/vogue.svg',
-    url:      'https://www.vogue.com',
-    category: 'Fashion',
-  },
-  {
-    name:     'LEGO',
-    logo:     '/images/clients/lego.svg',
-    url:      'https://www.lego.com',
-    category: 'Brand',
-  },
-  {
-    name:     'Adidas',
-    logo:     '/images/clients/adidas.svg',
-    url:      'https://www.adidas.com',
-    category: 'Brand',
-  },
+  { name: 'National Geographic',  logo: '/images/clients/natgeo.png',            url: 'https://www.nationalgeographic.com', category: 'Media'        },
+  { name: 'The New York Times',   logo: '/images/clients/the-newyork-times.png', url: 'https://www.nytimes.com',            category: 'Media'        },
+  { name: 'The Guardian',         logo: '/images/clients/the-guardian.png',      url: 'https://www.theguardian.com',        category: 'Media'        },
+  { name: 'Vogue',                logo: '/images/clients/vogue.png',             url: 'https://www.vogue.com',              category: 'Fashion'      },
+  { name: 'Marie Claire',         logo: '/images/clients/marie-claire.png',      url: 'https://www.marieclaire.com',        category: 'Fashion'      },
+  { name: 'Google',               logo: '/images/clients/google.png',            url: 'https://www.google.com',             category: 'Tech'         },
+  { name: 'Mastercard',           logo: '/images/clients/mastercard.png',        url: 'https://www.mastercard.com',         category: 'Finance'      },
+  { name: 'Adidas',               logo: '/images/clients/adidas.png',            url: 'https://www.adidas.com',             category: 'Brand'        },
+  { name: 'LEGO',                 logo: '/images/clients/lego.png',              url: 'https://www.lego.com',               category: 'Brand'        },
+  { name: 'Hyundai',              logo: '/images/clients/hyundai.jpg',           url: 'https://www.hyundai.com',            category: 'Automotive'   },
+  { name: 'Maersk',               logo: '/images/clients/maersk.png',            url: 'https://www.maersk.com',             category: 'Logistics'    },
+  { name: 'Movistar',             logo: '/images/clients/movistar.png',          url: 'https://www.movistar.cl',            category: 'Telecom'      },
+  { name: 'Entel',                logo: '/images/clients/entel.png',             url: 'https://www.entel.cl',               category: 'Telecom'      },
+  { name: 'Falabella',            logo: '/images/clients/falabella.png',         url: 'https://www.falabella.com',          category: 'Retail'       },
+  { name: 'Ripley',               logo: '/images/clients/ripley.png',            url: 'https://www.ripley.cl',              category: 'Retail'       },
+  { name: 'Codelco',              logo: '/images/clients/codelco.png',           url: 'https://www.codelco.com',            category: 'Industry'     },
+  { name: 'Novo Nordisk',         logo: '/images/clients/novo-nordisk.png',      url: 'https://www.novonordisk.com',        category: 'Pharma'       },
+  { name: 'Relais & Châteaux',    logo: '/images/clients/relais-chateaux.png',   url: 'https://www.relaischateaux.com',     category: 'Hospitality'  },
 ] as const;
 ---
 
 <BaseLayout
   title="Clients"
-  description="Morten Andersen — Trusted by National Geographic, The New York Times, The Guardian, Google, Vogue, LEGO and Adidas."
+  description="Morten Andersen — Trusted by National Geographic, The New York Times, The Guardian, Google, Vogue, LEGO, Adidas, Hyundai, Maersk and more."
 >
   <!-- Page header -->
   <section class="page-header">
