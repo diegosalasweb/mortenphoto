@@ -8,7 +8,6 @@ const cards = [
     festival:   'Hollywood International Documentary Awards',
     logo:       '/images/awards/Hollywood International Documentary Awards.jpg',
     work:       'The Blind Birdwatcher',
-    workImage:  '/images/awards/premio.jpg',
     client:     null,
   },
   {
@@ -17,7 +16,6 @@ const cards = [
     festival:   'Picture of The Year',
     logo:       '/images/awards/Pictures of The Year.jpg',
     work:       'Killer Export',
-    workImage:  null,
     client:     null,
   },
   {
@@ -26,7 +24,6 @@ const cards = [
     festival:   'Cannes Lion & FIAP',
     logo:       '/images/awards/Cannes Lion & FIAP.jpg',
     work:       'We need more volunteers',
-    workImage:  null,
     client:     'Fundación Las Rosas',
   },
 ] as const;
@@ -42,7 +39,7 @@ const cards = [
     <div class="hero__img-wrap">
       <img
         class="hero__img"
-        src="/images/awards/Hollywood International Documentary Awards.jpg"
+        src="/images/awards/premio.jpg"
         alt="Morten Andersen receiving award at Hollywood International Documentary Awards"
         loading="eager"
         decoding="async"
@@ -96,19 +93,6 @@ const cards = [
               <!-- Work -->
               <p class="award-card__label">Work</p>
               <p class="award-card__work">"{card.work}"</p>
-
-              <!-- Optional: work image -->
-              {card.workImage && (
-                <div class="award-card__work-img-wrap">
-                  <img
-                    class="award-card__work-img"
-                    src={card.workImage}
-                    alt={card.work}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              )}
 
               <!-- Optional: client -->
               {card.client && (
@@ -235,22 +219,28 @@ const cards = [
   /* Logo / award image */
   .award-card__logo-wrap {
     width: 100%;
-    aspect-ratio: 3 / 2;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .award-card__logo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.7) saturate(0.75);
-    transition: transform 0.5s ease, filter 0.5s ease;
+    max-width: 100%;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0.75) saturate(0.75);
+    transition: filter 0.4s ease;
   }
 
   .award-card:hover .award-card__logo {
-    transform: scale(1.04);
-    filter: brightness(0.85) saturate(1);
+    filter: brightness(0.95) saturate(1);
   }
 
   /* Body */
@@ -311,27 +301,6 @@ const cards = [
     line-height: 1.45;
     font-style: italic;
     margin-bottom: 1.25rem;
-  }
-
-  /* Optional work image */
-  .award-card__work-img-wrap {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    margin-bottom: 1.25rem;
-  }
-
-  .award-card__work-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.65) saturate(0.7);
-    transition: transform 0.5s ease, filter 0.5s ease;
-  }
-
-  .award-card:hover .award-card__work-img {
-    transform: scale(1.03);
-    filter: brightness(0.8) saturate(1);
   }
 
   .award-card__client {
