@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 
-// Agrega aquí los nombres de archivo a medida que el cliente suba fotos
-// a public/images/projects/el-abra/
-const galleryImages: string[] = [
-  // 'DJI_0607-300p-v1.jpg',
-  // 'DJI_0613-300p-v1.jpg',
-  // etc.
-];
+// Auto-detección de fotos en public/images/projects/el-abra/
+const imagesDir = join(process.cwd(), 'public/images/projects/el-abra');
+const allFiles = await readdir(imagesDir).catch(() => [] as string[]);
+const galleryImages = allFiles
+  .filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f) && f.toLowerCase() !== 'hero.jpg')
+  .sort();
 
 const capsules = [
   { id: 'rHQ_qKRw1pU', label: 'Cápsula 1' },
