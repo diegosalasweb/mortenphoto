@@ -9,8 +9,8 @@
   --color-muted:        #555555;
   --color-border:       #222222;
 
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body:    'Inter', sans-serif;
+  --font-display: 'Montserrat', sans-serif;
+  --font-body:    'Montserrat', sans-serif;
 
   --max-width:        1400px;
   --section-padding:  clamp(4rem, 8vw, 8rem);
@@ -33,6 +33,7 @@ body {
   background-color: var(--color-bg);
   color: var(--color-white);
   font-family: var(--font-body);
+  font-weight: 300;
   font-size: 1rem;
   line-height: 1.6;
   min-height: 100vh;
@@ -59,6 +60,7 @@ ul, ol {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
+  font-weight: 300;
   line-height: 1.05;
   letter-spacing: 0.02em;
 }
