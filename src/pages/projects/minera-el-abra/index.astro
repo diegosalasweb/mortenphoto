@@ -1,0 +1,687 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+// Agrega aquí los nombres de archivo a medida que el cliente suba fotos
+// a public/images/projects/el-abra/
+const galleryImages: string[] = [
+  // 'DJI_0607-300p-v1.jpg',
+  // 'DJI_0613-300p-v1.jpg',
+  // etc.
+];
+
+const capsules = [
+  { id: 'rHQ_qKRw1pU', label: 'Cápsula 1' },
+  { id: 'D1XcgPKHK1Q', label: 'Cápsula 2' },
+  { id: 'UBd5RgciyXQ', label: 'Cápsula 3' },
+  { id: 'eLT9BwgFB2Q', label: 'Cápsula 4' },
+  { id: 'j8Vjv_nbhoQ', label: 'Cápsula 5' },
+  { id: 'IPSqUpeeWGM', label: 'Cápsula 6' },
+];
+---
+
+<BaseLayout
+  title="Minera El Abra — 30 Años"
+  description="Producción audiovisual integral para conmemorar los 30 años de Minera El Abra, destacando su impacto en la industria, la comunidad y su conexión con Freeport-McMoRan."
+  image="/images/projects/el-abra/hero.jpg"
+>
+
+  <!-- ── 1. HERO FULLSCREEN ──────────────────────────────── -->
+  <section class="hero">
+    <div class="hero__img-wrap">
+      <img
+        class="hero__img"
+        src="/images/projects/el-abra/hero.jpg"
+        alt="Vista aérea de Minera El Abra"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="hero__overlay"></div>
+    </div>
+
+    <div class="hero__content container">
+      <p class="hero__eyebrow">Freeport-McMoRan</p>
+      <h1 class="hero__title">Minera El Abra</h1>
+      <span class="copper-line"></span>
+      <p class="hero__sub">30 Años</p>
+    </div>
+
+    <a href="#intro" class="hero__scroll" aria-label="Scroll">
+      <span class="hero__scroll-line"></span>
+    </a>
+  </section>
+
+  <!-- ── 2. INTRO / TEXTO ────────────────────────────────── -->
+  <section class="intro section" id="intro">
+    <div class="container intro__grid">
+      <div class="intro__label">
+        <p class="eyebrow">El Proyecto</p>
+      </div>
+      <div class="intro__body">
+        <p class="intro__text">
+          Producción audiovisual integral para conmemorar los 30 años
+          de Minera El Abra, destacando su impacto en la industria,
+          la comunidad y su conexión con Freeport-McMoRan.
+        </p>
+        <ul class="intro__meta">
+          <li>
+            <span class="meta-label">Cliente</span>
+            <span class="meta-value">Minera El Abra / Freeport-McMoRan</span>
+          </li>
+          <li>
+            <span class="meta-label">Año</span>
+            <span class="meta-value">2025</span>
+          </li>
+          <li>
+            <span class="meta-label">Servicios</span>
+            <span class="meta-value">Dirección · Fotografía · Video · Edición</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. VIDEO PRINCIPAL ─────────────────────────────── -->
+  <section class="video-section section">
+    <div class="container">
+      <p class="eyebrow">Video Principal</p>
+      <div class="video-wrap">
+        <iframe
+          class="video-embed"
+          src="https://www.youtube.com/embed/5XvYm4tVm1Q"
+          title="Minera El Abra — 30 Años"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. GALERÍA DE FOTOS ─────────────────────────────── -->
+  <section class="gallery-section section">
+    <div class="container">
+      <p class="eyebrow">Fotografía</p>
+      <h2 class="section-title">Galería</h2>
+      <span class="copper-line copper-line--sm"></span>
+
+      {galleryImages.length > 0 ? (
+        <div class="gallery-grid">
+          {galleryImages.map((filename, i) => (
+            <div class="gallery-item">
+              <img
+                src={`/images/projects/el-abra/${filename}`}
+                alt={`Minera El Abra — fotografía ${i + 1}`}
+                loading="lazy"
+                decoding="async"
+                class="gallery-item__img"
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="gallery-empty">
+          <p>Fotografías próximamente.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ── 5. CÁPSULAS ────────────────────────────────────── -->
+  <section class="capsules-section section">
+    <div class="container">
+      <p class="eyebrow">Contenido Corto</p>
+      <h2 class="section-title">Cápsulas</h2>
+      <span class="copper-line copper-line--sm"></span>
+
+      <div class="capsules-grid">
+        {capsules.map((cap) => (
+          <button
+            class="capsule-card"
+            data-video-id={cap.id}
+            aria-label={`Reproducir ${cap.label}`}
+          >
+            <div class="capsule-card__thumb-wrap">
+              <img
+                class="capsule-card__thumb"
+                src={`https://img.youtube.com/vi/${cap.id}/maxresdefault.jpg`}
+                alt={cap.label}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="capsule-card__overlay"></div>
+            </div>
+            <div class="capsule-card__play">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </div>
+            <p class="capsule-card__label">{cap.label}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MODAL ──────────────────────────────────────────── -->
+  <div class="modal" id="video-modal" aria-modal="true" role="dialog" aria-label="Reproducir cápsula" hidden>
+    <div class="modal__backdrop" id="modal-backdrop"></div>
+    <div class="modal__box">
+      <button class="modal__close" id="modal-close" aria-label="Cerrar video">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal__video-wrap" id="modal-video-wrap"></div>
+    </div>
+  </div>
+
+  <!-- ── 6. BOTÓN DE REGRESO ────────────────────────────── -->
+  <section class="back-section">
+    <div class="container back-section__inner">
+      <a href="https://mortenphoto.com" class="back-btn">
+        ← mortenphoto.com
+      </a>
+      <a href="/projects" class="back-link">
+        Ver todos los proyectos
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── Tokens locales El Abra ──────────────────────────── */
+  :root {
+    --ea-navy:   #1a3a5c;
+    --ea-blue:   #2d6a9f;
+    --ea-copper: #e8701a;
+  }
+
+  /* ── Hero ────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero__img-wrap {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(10,10,10,1)     0%,
+      rgba(26,58,92,0.55)  40%,
+      rgba(10,10,10,0.2)   100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 6rem;
+    max-width: 800px;
+  }
+
+  .hero__eyebrow {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ea-copper);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    line-height: 0.88;
+    color: var(--color-white);
+    letter-spacing: 0.03em;
+  }
+
+  .hero__sub {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    color: rgba(245,245,245,0.6);
+    letter-spacing: 0.15em;
+    margin-top: 0.5rem;
+  }
+
+  /* Scroll indicator */
+  .hero__scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.45;
+    transition: opacity 0.2s;
+  }
+  .hero__scroll:hover { opacity: 0.8; }
+
+  .hero__scroll-line {
+    display: block;
+    width: 1px;
+    height: 3rem;
+    background: var(--ea-copper);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6) translateY(-0.5rem); }
+    50%       { opacity: 1;   transform: scaleY(1)   translateY(0); }
+  }
+
+  /* ── Utility ─────────────────────────────────────────── */
+  .copper-line {
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: var(--ea-copper);
+    margin-block: 1.25rem;
+  }
+
+  .copper-line--sm {
+    margin-top: 0.75rem;
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--ea-copper);
+    margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--color-white);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Intro ───────────────────────────────────────────── */
+  .intro__grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .intro__label .eyebrow { margin-bottom: 0; }
+
+  .intro__text {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    line-height: 1.8;
+    color: rgba(245,245,245,0.75);
+    font-weight: 300;
+    max-width: 60ch;
+    margin-bottom: 2.5rem;
+  }
+
+  .intro__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+  }
+
+  .intro__meta li {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .meta-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    min-width: 80px;
+    padding-top: 0.1rem;
+  }
+
+  .meta-value {
+    font-size: 0.85rem;
+    color: rgba(245,245,245,0.7);
+  }
+
+  /* ── Video ───────────────────────────────────────────── */
+  .video-section {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .video-section .eyebrow {
+    margin-bottom: 1.5rem;
+  }
+
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+  }
+
+  .video-embed {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Gallery ─────────────────────────────────────────── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+  }
+
+  .gallery-item {
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+    background: var(--color-surface);
+  }
+
+  .gallery-item__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.5s ease;
+    filter: saturate(0.85);
+  }
+
+  .gallery-item:hover .gallery-item__img {
+    transform: scale(1.04);
+    filter: saturate(1.1);
+  }
+
+  /* Wide items each 5th */
+  .gallery-item:nth-child(5n + 1) {
+    grid-column: span 2;
+  }
+
+  .gallery-empty {
+    padding: 4rem 2rem;
+    text-align: center;
+    border: 1px dashed var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Capsules ────────────────────────────────────────── */
+  .capsules-section {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .capsules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+  }
+
+  .capsule-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .capsule-card__thumb-wrap {
+    position: absolute;
+    inset: 0;
+  }
+
+  .capsule-card__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, filter 0.5s ease;
+    filter: brightness(0.7) saturate(0.8);
+  }
+
+  .capsule-card:hover .capsule-card__thumb {
+    transform: scale(1.04);
+    filter: brightness(0.45) saturate(0.7);
+  }
+
+  .capsule-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(10,10,10,0.75) 0%,
+      transparent 60%
+    );
+  }
+
+  .capsule-card__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    z-index: 1;
+  }
+
+  .capsule-card__play svg {
+    width: 48px;
+    height: 48px;
+    background: var(--ea-copper);
+    border-radius: 50%;
+    padding: 14px 12px 14px 16px;
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  .capsule-card:hover .capsule-card__play svg {
+    transform: scale(1.12);
+    background: #ff8a2e;
+  }
+
+  .capsule-card__label {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.55);
+    z-index: 1;
+    transition: color 0.25s;
+  }
+
+  .capsule-card:hover .capsule-card__label {
+    color: rgba(245,245,245,0.85);
+  }
+
+  /* ── Modal ───────────────────────────────────────────── */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .modal[hidden] { display: none; }
+
+  .modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+  }
+
+  .modal__box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 960px;
+    background: #000;
+    border: 1px solid var(--color-border);
+  }
+
+  .modal__close {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    background: none;
+    border: none;
+    color: rgba(245,245,245,0.6);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+    line-height: 0;
+  }
+
+  .modal__close:hover { color: var(--ea-copper); }
+
+  .modal__video-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+  }
+
+  .modal__video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* ── Back section ────────────────────────────────────── */
+  .back-section {
+    padding-block: 4rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-section__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ea-copper);
+    border: 1px solid var(--ea-copper);
+    padding: 0.75rem 1.75rem;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .back-btn:hover {
+    background: var(--ea-copper);
+    color: var(--color-bg);
+  }
+
+  .back-link {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--color-white); }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .intro__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item:nth-child(5n + 1) { grid-column: span 1; }
+    .capsules-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .capsules-grid { grid-template-columns: 1fr; }
+    .back-section__inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<script>
+  const modal     = document.getElementById('video-modal')!;
+  const backdrop  = document.getElementById('modal-backdrop')!;
+  const closeBtn  = document.getElementById('modal-close')!;
+  const videoWrap = document.getElementById('modal-video-wrap')!;
+
+  function openModal(videoId: string) {
+    videoWrap.innerHTML = `<iframe
+      src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+      title="Cápsula"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>`;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    videoWrap.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.capsule-card').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.videoId;
+      if (id) openModal(id);
+    });
+  });
+
+  backdrop.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+</script>
