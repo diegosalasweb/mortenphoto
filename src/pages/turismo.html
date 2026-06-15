@@ -190,7 +190,7 @@
       gap: 64px;
       align-items: center;
     }
-    .director-img { width: 100%; height: 500px; object-fit: cover; object-position: center top; }
+    .director-img { width: 100%; height: auto; display: block; }
     .director-text p {
       font-size: 17px;
       color: var(--gray);
@@ -212,8 +212,8 @@
       gap: 4px;
       margin-bottom: 40px;
     }
-    .natgeo-grid img { width: 100%; height: 260px; object-fit: cover; display: block; }
-    .natgeo-grid .natgeo-cover { object-fit: contain; background: #fff; padding: 8px; }
+    .natgeo-grid img { width: 100%; height: auto; display: block; }
+    .natgeo-grid .natgeo-cover { background: #fff; padding: 8px; }
 
     /* FPV */
     .fpv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
@@ -595,16 +595,66 @@
   <div class="section-label">Clientes / Clients</div>
   <h2 style="color:var(--dark);">Client <span style="color:var(--orange);">list</span></h2>
   <div class="clients-grid">
-    <span class="client-name">Mercedes-Benz</span>
-    <span class="client-name">LATAM Airlines</span>
-    <span class="client-name">National Geographic</span>
-    <span class="client-name">Relais &amp; Châteaux</span>
-    <span class="client-name">Marriott</span>
-    <span class="client-name">British Airways</span>
-    <span class="client-name">The Ritz-Carlton</span>
-    <span class="client-name">Hyatt</span>
-    <span class="client-name">Google</span>
-    <span class="client-name">Carlsberg</span>
+
+    <!-- Mercedes-Benz -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <circle cx="80" cy="28" r="22" fill="none" stroke="#3B3636" stroke-width="2"/>
+      <path d="M80 6 L80 28 L97 39" fill="none" stroke="#3B3636" stroke-width="2"/>
+      <path d="M80 6 L80 28 L63 39" fill="none" stroke="#3B3636" stroke-width="2"/>
+      <text x="80" y="56" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="8" fill="#3B3636" letter-spacing="1">MERCEDES-BENZ</text>
+    </svg>
+
+    <!-- LATAM -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="38" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="26" font-weight="900" fill="#E3051B" letter-spacing="-1">LATAM</text>
+    </svg>
+
+    <!-- National Geographic -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <rect x="56" y="8" width="18" height="44" fill="#FFCC00"/>
+      <text x="80" y="62" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="7" fill="#3B3636" letter-spacing="0.5">NATIONAL GEOGRAPHIC</text>
+    </svg>
+
+    <!-- Relais & Chateaux -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="28" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#8B7340" letter-spacing="1">RELAIS &amp;</text>
+      <text x="80" y="44" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#8B7340" letter-spacing="1">CHÂTEAUX</text>
+    </svg>
+
+    <!-- Marriott -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="38" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="900" fill="#C8102E" letter-spacing="-0.5">Marriott</text>
+    </svg>
+
+    <!-- British Airways -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="26" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="1">BRITISH</text>
+      <text x="80" y="42" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#003087" letter-spacing="1">AIRWAYS</text>
+    </svg>
+
+    <!-- The Ritz-Carlton -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="24" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#3B3636" letter-spacing="1">THE</text>
+      <text x="80" y="38" text-anchor="middle" font-family="Georgia,serif" font-size="10" font-weight="700" fill="#3B3636" letter-spacing="0.5">RITZ-CARLTON</text>
+    </svg>
+
+    <!-- Hyatt -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="40" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="28" font-weight="300" fill="#3B3636" letter-spacing="4">HYATT</text>
+    </svg>
+
+    <!-- Google -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="42" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#3B3636">
+        <tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan>
+      </text>
+    </svg>
+
+    <!-- Carlsberg -->
+    <svg viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:140px;opacity:0.6;">
+      <text x="80" y="38" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="700" fill="#1B5E20" letter-spacing="-0.5">Carlsberg</text>
+    </svg>
+
   </div>
 </section>
 
