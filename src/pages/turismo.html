@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turismo — Morten Andersen</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E8580A;
+      --dark: #3B3636;
+      --darker: #2A2525;
+      --light: #F2F0EE;
+      --gray: #9A9490;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(42,37,37,0.92);
+      backdrop-filter: blur(8px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-box {
+      width: 36px; height: 36px;
+      border: 2px solid var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--white);
+    }
+    .logo-name {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .logo-name strong { font-weight: 800; }
+
+    /* LANG SWITCHER */
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .lang-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--gray);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .lang-btn.active {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+    .lang-btn:hover { color: var(--white); border-color: var(--white); }
+
+    /* i18n — hide/show */
+    [data-lang="en"] { display: none; }
+    body.lang-en [data-lang="es"] { display: none; }
+    body.lang-en [data-lang="en"] { display: revert; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(42,37,37,0.85) 0%, rgba(42,37,37,0.1) 60%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 48px 64px;
+    }
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .hero-bar {
+      width: 4px;
+      height: 48px;
+      background: var(--orange);
+    }
+    .hero-sub {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--light);
+      opacity: 0.8;
+    }
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 96px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      color: var(--white);
+    }
+
+    /* SECTIONS */
+    section { padding: 96px 48px; }
+    section + section { border-top: 1px solid rgba(255,255,255,0.07); }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 40px;
+      line-height: 1.05;
+    }
+    h2 span { color: var(--orange); }
+
+    /* STORYTELLING */
+    .storytelling-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .storytelling-text p {
+      font-size: 17px;
+      color: var(--gray);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .storytelling-text p:last-child { margin-bottom: 0; }
+    .storytelling-text p strong { color: var(--light); font-weight: 600; }
+    .storytelling-images { display: flex; flex-direction: column; gap: 16px; }
+    .storytelling-images img { width: 100%; height: 240px; object-fit: cover; }
+
+    /* DIRECTOR */
+    .director-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .director-img { width: 100%; height: 500px; object-fit: cover; object-position: center top; }
+    .director-text p {
+      font-size: 17px;
+      color: var(--gray);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .director-text p:last-child { margin-bottom: 0; }
+
+    /* REEL */
+    .reel-section { background: var(--darker); }
+    .reel-wrap { max-width: 860px; margin: 0 auto; }
+    .video-embed { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+    .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+    /* NATGEO */
+    .natgeo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+      margin-bottom: 40px;
+    }
+    .natgeo-grid img { width: 100%; height: 260px; object-fit: cover; display: block; }
+    .natgeo-grid .natgeo-cover { object-fit: contain; background: #fff; padding: 8px; }
+
+    /* FPV */
+    .fpv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .fpv-text p { font-size: 17px; color: var(--gray); line-height: 1.75; margin-bottom: 20px; }
+    .fpv-text p:last-child { margin-bottom: 0; }
+
+    /* VIDEO THUMBS */
+    .historias-section { background: var(--darker); }
+    .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+    .video-thumb {
+      position: relative; cursor: pointer; overflow: hidden;
+      background: #111; aspect-ratio: 16/9;
+    }
+    .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, opacity 0.4s ease; }
+    .video-thumb:hover img { transform: scale(1.04); opacity: 0.7; }
+    .thumb-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+    .play-btn {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .video-thumb:hover .play-btn { transform: scale(1.1); }
+    .play-btn svg { margin-left: 4px; }
+    .thumb-title {
+      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--white); font-weight: 600; text-align: center;
+      padding: 0 12px; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+
+    /* INTL */
+    .intl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+    .intl-thumb { position: relative; cursor: pointer; overflow: hidden; background: #111; aspect-ratio: 16/9; }
+    .intl-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, opacity 0.4s ease; }
+    .intl-thumb:hover img { transform: scale(1.04); opacity: 0.7; }
+    .intl-thumb .thumb-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+
+    /* PORTFOLIO */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+    .portfolio-thumb { position: relative; cursor: pointer; overflow: hidden; background: #111; aspect-ratio: 16/9; }
+    .portfolio-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, opacity 0.4s ease; }
+    .portfolio-thumb:hover img { transform: scale(1.04); opacity: 0.7; }
+    .portfolio-thumb .thumb-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+
+    /* CLIENTS */
+    .clients-section { background: var(--white); }
+    .clients-section h2 { color: var(--dark); }
+    .clients-section .section-label { color: var(--orange); }
+    .clients-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px 48px; align-items: center; justify-items: center; }
+    .client-name { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark); opacity: 0.5; text-align: center; }
+
+    /* MODAL */
+    .modal-bg { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; }
+    .modal-bg.active { display: flex; }
+    .modal-inner { position: relative; width: 90vw; max-width: 1000px; }
+    .modal-close { position: absolute; top: -44px; right: 0; background: none; border: none; color: var(--white); font-size: 28px; cursor: pointer; line-height: 1; }
+    .modal-video { position: relative; padding-bottom: 56.25%; height: 0; }
+    .modal-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* FOOTER */
+    footer { background: var(--darker); padding: 48px; display: flex; align-items: center; justify-content: space-between; }
+    footer .logo-name { color: var(--gray); }
+    footer .logo-box { border-color: var(--gray); color: var(--gray); }
+    footer p { font-size: 12px; color: var(--gray); letter-spacing: 0.05em; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      section { padding: 64px 24px; }
+      nav { padding: 16px 24px; }
+      .hero-content { padding: 0 24px 48px; }
+      .storytelling-grid, .director-grid, .fpv-grid { grid-template-columns: 1fr; }
+      .natgeo-grid { grid-template-columns: 1fr 1fr; }
+      .video-grid, .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .intl-grid { grid-template-columns: 1fr 1fr; }
+      .clients-grid { grid-template-columns: repeat(3, 1fr); }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+    @media (max-width: 560px) {
+      .video-grid, .portfolio-grid, .natgeo-grid { grid-template-columns: 1fr; }
+      .clients-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .video-thumb img, .intl-thumb img, .portfolio-thumb img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-box">MA</div>
+    <span class="logo-name">MORTEN<strong>ANDERSEN</strong></span>
+  </a>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('es')" id="btn-es">ES</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <img src="/turismo/hero.jpg" alt="Filmmaker & Photographer — Turismo" />
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-bar"></div>
+      <span class="hero-sub">Filmmaker &amp; Photographer</span>
+    </div>
+    <h1 data-lang="es">Turismo<br>&amp; Hospitalidad</h1>
+    <h1 data-lang="en">Tourism<br>&amp; Hospitality</h1>
+  </div>
+</section>
+
+<!-- STORYTELLING -->
+<section>
+  <div class="section-label" data-lang="es">Enfoque</div>
+  <div class="section-label" data-lang="en">Approach</div>
+  <div class="storytelling-grid">
+    <div class="storytelling-text">
+      <!-- ES -->
+      <h2 data-lang="es">Story<span>telling</span></h2>
+      <div data-lang="es">
+        <p>Quiero crear <strong>historias de destinos que inspiren a viajar</strong> y conecten emocionalmente al público con los lugares y las personas.</p>
+        <p>El storytelling es importante en el turismo porque la gente no viaja por los lugares en sí, sino por las <strong>experiencias, las emociones y los recuerdos</strong>.</p>
+        <p>Una playa, una montaña o una ciudad pueden verse hermosas, pero cientos de destinos pueden ofrecer paisajes similares.</p>
+        <p><strong>Las historias son lo que hacen que un lugar sea único e inolvidable.</strong></p>
+      </div>
+      <!-- EN -->
+      <h2 data-lang="en">Story<span>telling</span></h2>
+      <div data-lang="en">
+        <p>I want to create <strong>destination stories that inspire travel</strong> and connect audiences emotionally with places and people.</p>
+        <p>Storytelling is important in tourism because people don't travel for locations — they travel for <strong>experiences, emotions, and memories</strong>.</p>
+        <p>A beach, mountain, or city can look beautiful, but hundreds of destinations may offer similar scenery.</p>
+        <p><strong>Stories are what make a place unique and memorable.</strong></p>
+      </div>
+    </div>
+    <div class="storytelling-images">
+      <img src="/turismo/storytelling-1.jpg" alt="Torres del Paine" />
+      <img src="/turismo/storytelling-2.jpg" alt="Retrato documental" />
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTOR -->
+<section>
+  <div class="director-grid">
+    <img class="director-img" src="/turismo/director.jpg" alt="Morten Andersen, filmmaker" />
+    <div class="director-text">
+      <!-- ES -->
+      <div data-lang="es">
+        <div class="section-label">Director</div>
+        <h2>Morten<br><span>Andersen</span></h2>
+        <p>Mi capacidad para capturar imágenes que cuentan historias auténticas y resonantes me permite conectar con personas de diversos trasfondos y abordar con éxito proyectos complejos.</p>
+        <p>Esta experiencia me permite ofrecer resultados visuales que no solo cumplen con las expectativas, sino que también <strong>inspiran y cautivan a audiencias globales</strong>.</p>
+        <p>Además de crear portadas para National Geographic y ganar premios en Hollywood como cineasta, cuento con <strong>más de 15 años de experiencia</strong> en hospitalidad y turismo en diversas partes de Chile y del mundo.</p>
+      </div>
+      <!-- EN -->
+      <div data-lang="en">
+        <div class="section-label">Prize Winning Director</div>
+        <h2>Morten<br><span>Andersen</span></h2>
+        <p>My ability to capture images that tell authentic and resonant stories allows me to connect with people from diverse backgrounds and successfully tackle complex projects.</p>
+        <p>This experience enables me to deliver visual results that not only meet expectations but also <strong>inspire and captivate global audiences</strong>.</p>
+        <p>In addition to creating covers for National Geographic and winning awards in Hollywood as a filmmaker, I have <strong>over 15 years of experience</strong> in hospitality and tourism across many parts of Chile and the world.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REEL GENERAL -->
+<section class="reel-section">
+  <div class="section-label">Showreel</div>
+  <h2 data-lang="es">Reel <span>General</span> — Basado en Storytelling</h2>
+  <h2 data-lang="en">Reel <span>General</span> — Based on Storytelling</h2>
+  <div class="reel-wrap">
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/dwB6sOmT-1I" title="Reel General — Morten Andersen" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- NATIONAL GEOGRAPHIC -->
+<section>
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="section-label">Fotografía</div>
+    <h2><span>Fotógrafo</span> National Geographic</h2>
+  </div>
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="section-label">Photography</div>
+    <h2><span>National Geographic</span> Photographer</h2>
+  </div>
+  <div class="natgeo-grid">
+    <img src="/turismo/natgeo-1.jpg" alt="Retrato Andino" />
+    <img src="/turismo/natgeo-2.jpg" alt="Gastronomía" />
+    <img src="/turismo/natgeo-3.jpg" alt="Patagonia" />
+    <img src="/turismo/natgeo-cover.jpg" alt="National Geographic Traveler" class="natgeo-cover" />
+  </div>
+  <p data-lang="es" style="font-size:17px; color:var(--gray); line-height:1.75; max-width:640px;">En mi visión fotográfica, busco mostrar los destinos a través de una <strong style="color:var(--light)">lente documental y de reportaje</strong> para potenciar la credibilidad de las imágenes y su comunicación.</p>
+  <p data-lang="en" style="font-size:17px; color:var(--gray); line-height:1.75; max-width:640px;">In my photographic vision, I aim to showcase destinations through a <strong style="color:var(--light)">documentary and reportage lens</strong> to enhance the credibility of the images and their communication.</p>
+</section>
+
+<!-- FPV DRONE -->
+<section style="background:var(--darker);">
+  <div class="fpv-grid">
+    <div class="fpv-text">
+      <!-- ES -->
+      <div data-lang="es">
+        <div class="section-label">Drone</div>
+        <h2>FPV: La perspectiva<br>de la <span>aventura</span></h2>
+        <p>Aporta dinamismo, movimiento y pura emoción a la promoción de destinos y experiencias turísticas.</p>
+        <p>A través de tomas fluidas, veloces e inmersivas, rompe con la fotografía tradicional para <strong>sumergir a los viajeros directamente en la acción</strong>.</p>
+        <p>Permite realizar recorridos aéreos cinematográficos por paisajes naturales y transmitir una sensación de <strong>libertad, modernidad y exclusividad</strong> desde ángulos únicos.</p>
+        <p>Es la herramienta definitiva para exhibir la verdadera escala y belleza de un destino de una manera visualmente impactante que inspire a las personas a viajar.</p>
+      </div>
+      <!-- EN -->
+      <div data-lang="en">
+        <div class="section-label">Drone</div>
+        <h2>FPV Drone: The Perspective<br>of <span>Adventure</span></h2>
+        <p>Bring dynamism, motion, and pure excitement to the promotion of tourism destinations and experiences.</p>
+        <p>Through smooth, fast-paced, and immersive shots, it breaks away from traditional photography to <strong>dive travelers straight into the action</strong>.</p>
+        <p>It allows for cinematic fly-throughs across natural landscapes and conveys a sense of <strong>freedom, modernity, and exclusivity</strong> from breathtaking, unique angles.</p>
+        <p>It is the ultimate tool to showcase the true scale and beauty of a destination in a visually stunning way that inspires people to travel.</p>
+      </div>
+    </div>
+    <div>
+      <div class="video-embed">
+        <iframe src="https://player.vimeo.com/video/762443864" title="FPV Drone — Morten Andersen" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIEMPRE CONTAMOS HISTORIAS -->
+<section class="historias-section">
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="section-label">Proyectos</div>
+    <h2>Siempre contamos<br><span>historias</span></h2>
+    <p style="font-size:17px; color:var(--gray); line-height:1.75; max-width:700px; margin-bottom:48px;">Creemos que cada persona, marca y momento tiene una historia que vale la pena contar. Creamos películas que narran historias significativas a través de una dirección meticulosa, imágenes cinematográficas y un profundo compromiso con la autenticidad. Con este mismo estilo, vamos a producir el video para tu próximo proyecto.</p>
+  </div>
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="section-label">Projects</div>
+    <h2>We always<br><span>tell stories</span></h2>
+    <p style="font-size:17px; color:var(--gray); line-height:1.75; max-width:700px; margin-bottom:48px;">We are experts in discovering and telling inspiring stories about nature and the passionate people behind it. With this exact same style, we are going to produce the video for your next project.</p>
+  </div>
+  <div class="video-grid">
+    <div class="video-thumb" data-src="https://www.youtube.com/embed/HYlnPy7kt2Q">
+      <img src="https://img.youtube.com/vi/HYlnPy7kt2Q/hqdefault.jpg" alt="The Blind Birdwatcher" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">The Blind Birdwatcher — Argentina</span>
+      </div>
+    </div>
+    <div class="video-thumb" data-src="https://www.youtube.com/embed/7jXOvcxxdq8">
+      <img src="https://img.youtube.com/vi/7jXOvcxxdq8/hqdefault.jpg" alt="Carmen, Patagonia" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Carmen — Patagonia, Chile</span>
+      </div>
+    </div>
+    <div class="video-thumb" data-src="https://www.youtube.com/embed/FOukm687SIo">
+      <img src="https://img.youtube.com/vi/FOukm687SIo/hqdefault.jpg" alt="Chef Virgilio Martinez" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Chef Virgilio Martínez — Perú</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCCIONES INTERNACIONALES -->
+<section>
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="section-label">Portfolio</div>
+    <h2>Producciones de Turismo<br><span>Internacional</span></h2>
+  </div>
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="section-label">Portfolio</div>
+    <h2><span>International</span> Tourism<br>Productions</h2>
+  </div>
+  <div class="intl-grid">
+    <div class="intl-thumb" data-src="https://www.youtube.com/embed/v9aH86y6ffM">
+      <img src="https://img.youtube.com/vi/v9aH86y6ffM/hqdefault.jpg" alt="Carlsberg - Hotel Radisson" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Carlsberg — Hotel Radisson, Denmark</span>
+      </div>
+    </div>
+    <div class="intl-thumb" data-src="https://www.youtube.com/embed/wx4_Z1idj4E">
+      <img src="https://img.youtube.com/vi/wx4_Z1idj4E/hqdefault.jpg" alt="Tierra Patagonia" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Tierra Patagonia — Chile</span>
+      </div>
+    </div>
+    <div class="intl-thumb" data-src="https://www.youtube.com/embed/sAcKkUmn2Wg">
+      <img src="https://img.youtube.com/vi/sAcKkUmn2Wg/hqdefault.jpg" alt="Chanel Europe" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Chanel — Europe</span>
+      </div>
+    </div>
+    <div class="intl-thumb" data-src="https://www.youtube.com/embed/d8FQff8u8pE">
+      <img src="https://img.youtube.com/vi/d8FQff8u8pE/hqdefault.jpg" alt="The Awasi Letter" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">The Awasi Letter — Argentina &amp; Chile</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO REELS -->
+<section style="background:var(--darker);">
+  <div class="section-label">Reels</div>
+  <h2>Portfolio <span>Morten Andersen</span></h2>
+  <div class="portfolio-grid">
+    <div class="portfolio-thumb" data-src="https://www.youtube.com/embed/mpiuv8GO4DM">
+      <img src="https://img.youtube.com/vi/mpiuv8GO4DM/hqdefault.jpg" alt="Reel Travel" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Reel Travel</span>
+      </div>
+    </div>
+    <div class="portfolio-thumb" data-src="https://www.youtube.com/embed/dwB6sOmT-1I">
+      <img src="https://img.youtube.com/vi/dwB6sOmT-1I/hqdefault.jpg" alt="Reel General" />
+      <div class="thumb-overlay">
+        <div class="play-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="5,2 16,9 5,16" fill="white"/></svg></div>
+        <span class="thumb-title">Reel General</span>
+      </div>
+    </div>
+    <div class="portfolio-thumb" style="cursor:default;">
+      <img src="/turismo/experiencia.jpg" alt="mortenphoto.com" style="opacity:0.6;" />
+      <div class="thumb-overlay">
+        <a href="https://mortenphoto.com" target="_blank" rel="noopener" style="background:var(--orange); color:#fff; font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:12px 24px; text-decoration:none;">mortenphoto.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCIA -->
+<section>
+  <!-- ES -->
+  <div data-lang="es">
+    <div class="section-label">Trayectoria</div>
+    <h2><span>Experiencia</span> en Hotelería<br>y Turismo</h2>
+  </div>
+  <!-- EN -->
+  <div data-lang="en">
+    <div class="section-label">Track Record</div>
+    <h2><span>Experience</span> in Hospitality<br>and Tourism</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;">
+    <div>
+      <div data-lang="es">
+        <p style="font-size:17px; color:var(--gray); line-height:1.75; margin-bottom:20px;">Más de <strong style="color:var(--light)">15 años de experiencia</strong> en producciones hoteleras, trabajando con empresas líderes en Sudamérica y el mundo.</p>
+        <p style="font-size:17px; color:var(--gray); line-height:1.75; margin-bottom:20px;">Especialista en comunicar temas clave dentro de la industria del turismo y la hospitalidad.</p>
+        <p style="font-size:17px; color:var(--gray); line-height:1.75; margin-bottom:20px;">Capacidad para desarrollar la visión y el plan de producción con el respaldo de mi equipo.</p>
+        <p style="font-size:17px; color:var(--gray); line-height:1.75;">Experiencia trabajando para las <strong style="color:var(--light)">cadenas hoteleras líderes a nivel mundial</strong> y revistas internacionales de viajes y turismo.</p>
+      </div>
+      <div data-lang="en">
+        <p style="font-size:17px; color:var(--gray); line-height:1.75; margin-bottom:20px;">Over <strong style="color:var(--light)">15 years of experience</strong> in hotel productions, working with leading companies in South America and worldwide.</p>
+        <p style="font-size:17px; color:var(--gray); line-height:1.75; margin-bottom:20px;">Specialist in communicating key topics in the tourism and hospitality industry.</p>
+        <p style="font-size:17px; color:var(--gray); line-height:1.75; margin-bottom:20px;">Skilled in developing the vision and production plan with the support of my team.</p>
+        <p style="font-size:17px; color:var(--gray); line-height:1.75;">Experience working for the <strong style="color:var(--light)">world's leading hotel chains</strong> and international travel and tourism magazines.</p>
+      </div>
+    </div>
+    <img src="/turismo/experiencia.jpg" alt="Fotógrafo en locación" style="width:100%; height:440px; object-fit:cover;" />
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="clients-section">
+  <div class="section-label">Clientes / Clients</div>
+  <h2 style="color:var(--dark);">Client <span style="color:var(--orange);">list</span></h2>
+  <div class="clients-grid">
+    <span class="client-name">Mercedes-Benz</span>
+    <span class="client-name">LATAM Airlines</span>
+    <span class="client-name">National Geographic</span>
+    <span class="client-name">Relais &amp; Châteaux</span>
+    <span class="client-name">Marriott</span>
+    <span class="client-name">British Airways</span>
+    <span class="client-name">The Ritz-Carlton</span>
+    <span class="client-name">Hyatt</span>
+    <span class="client-name">Google</span>
+    <span class="client-name">Carlsberg</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="logo">
+    <div class="logo-box">MA</div>
+    <span class="logo-name">MORTEN<strong>ANDERSEN</strong></span>
+  </a>
+  <p>mortenphoto.com</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-inner">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="modal-video">
+      <iframe id="modal-iframe" src="" title="Video" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  // LANG SWITCHER
+  function setLang(lang) {
+    document.body.classList.toggle('lang-en', lang === 'en');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+    localStorage.setItem('ma-lang', lang);
+  }
+  // Restore saved preference
+  const saved = localStorage.getItem('ma-lang');
+  if (saved === 'en') setLang('en');
+
+  // VIDEO MODAL
+  const modal = document.getElementById('modal');
+  const iframe = document.getElementById('modal-iframe');
+  const closeBtn = document.getElementById('modal-close');
+
+  document.querySelectorAll('[data-src]').forEach(el => {
+    el.addEventListener('click', () => {
+      iframe.src = el.dataset.src + '?autoplay=1';
+      modal.classList.add('active');
+    });
+  });
+
+  function closeModal() {
+    modal.classList.remove('active');
+    iframe.src = '';
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>
